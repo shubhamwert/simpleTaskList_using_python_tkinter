@@ -9,7 +9,7 @@ def CreateTable(c,tableName,attr):
             else:
                 st=st+" ".join(p)
         print(st)
-        c.execute("CREATE TABLE "+tableName+" ( "+st+" );")
+        c.execute("CREATE TABLE IF EXISTS"+tableName+" ( "+st+" );")
     except :
         print("table already exist, tables cant have same name\nto drop table try command\n\n\'DropTable(cursor,tableName)\'")
     
@@ -22,16 +22,16 @@ def InsertData(c,tableName,values):
     st=""
     for p in values:
             if p!=values[-1]:
-                st=st+" ".join(p)+","
+                st=st+''' '''.join(p)+''','''
             else:
-                st=st+" ".join(p)
+                st=st+''' '''.join(p)
     print(st)
-    c.execute("INSERT INTO "+tableName+" VALUES ( "+st+" );")
+    c.execute('''INSERT INTO '''+tableName+''' VALUES ( '''+st+''' );''')
+    print("INSERTION COMPLETED")
 
-def printWholeList(c,tableName):
+def getWholeList(c,tableName):
     k=c.execute('''Select * FROM '''+tableName)
-    for i in k:
-        print(i)
+    
     return k
 def printcol(c,tableName,colName):
    
