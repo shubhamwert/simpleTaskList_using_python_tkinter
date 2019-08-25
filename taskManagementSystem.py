@@ -1,4 +1,4 @@
-import tkinter 
+import tkinter
 import sqlite3 as sq
 import sqlHelper as helper
 
@@ -27,23 +27,35 @@ def addTask():
     tkinter.mainloop()
 
 
-def getTask():
+def getTaskName():
     mastera=tkinter.Tk()
-    mastera.geometry("500x500")
-    taskNumber=0
     
-   
+    
+    scrollbar = tkinter.Scrollbar(mastera)
+    scrollbar.pack( side = tkinter.RIGHT, fill = tkinter.Y )
 
+    mylist = tkinter.Listbox(mastera, yscrollcommand = scrollbar.set )
+    mylist.bind('<<ListboxSelect>>',lambda event:onClickEvent(mylist))
     p=helper.getData()
-    print(p)
     for i in p:
-         tkinter.Text(mastera).grid(row=taskNumber,column=0)   
-         tkinter.Text(mastera).grid(row=taskNumber,column=1)
-         tasknumber=taskNumber+1
+            mylist.insert(tkinter.END,i[0])
 
+    mylist.pack( side = tkinter.LEFT, fill = tkinter.BOTH )
+    scrollbar.config( command = mylist.yview )
 
     mastera.mainloop()
+def onClickEvent(mylist):
+        selection=mylist.curselection()
+        if len (selection)>0:
+                print(selection[0])
+                p=helper.getData()
+                master=tkinter.Tk()
+                viewText=tkinter.Text(master)
+                print(p[selection[0]][1])
+                viewText.insert(tkinter.END,p[selection[0]][1])
+                viewText.grid(row=0,column=0)
+                master.mainloop()
 
-getTask()
+getTaskName() 
 addTask()
 
